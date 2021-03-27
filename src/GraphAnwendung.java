@@ -262,7 +262,11 @@ public class GraphAnwendung {
             for (int x = 0; x < anzahl; x++)
                 s.append(format(ids[x])).append("|");
 
-            s.append("\n").append("-------+".repeat(Math.max(0, anzahl + 1))).append("\n");
+            s.append("\n");
+            for (int i = 0; i < Math.max(0, anzahl + 1); i++)
+                s.append("-------+");
+            s.append("\n");
+
             for (int y = 0; y < anzahl; y++) {
                 s.append(format(ids[y])).append("|");
                 for (int x = 0; x < anzahl; x++) {
@@ -271,7 +275,10 @@ public class GraphAnwendung {
                     else s.append(format("" + matrix[x][y]));
                     s.append("|");
                 }
-                s.append("\n").append("-------+".repeat(Math.max(0, anzahl + 1))).append("\n");
+                s.append("\n");
+                for (int i = 0; i < Math.max(0, anzahl + 1); i++)
+                    s.append("-------+");
+                s.append("\n");
             }
             return s.toString();
         }

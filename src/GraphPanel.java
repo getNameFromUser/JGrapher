@@ -5,9 +5,9 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.NoninvertibleTransformException;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.DecimalFormat;
 import java.util.Arrays;
@@ -434,7 +434,7 @@ public class GraphPanel<V extends Vertex> extends JPanel {
         stringJoiner.add("Kanten:");
         for (edges.toFirst(); edges.hasAccess(); edges.next())
             stringJoiner.add(edges.getContent().toString());
-        Files.write(Path.of(dateiname), Arrays.asList(stringJoiner.toString().split("\n")));
+        Files.write(Paths.get(new File(dateiname).toURI()), Arrays.asList(stringJoiner.toString().split("\n")));
     }
 
     /**
@@ -445,7 +445,7 @@ public class GraphPanel<V extends Vertex> extends JPanel {
      */
 
     public void laden(String dateiname) throws IOException {
-        String[] zeilen = Files.readAllLines(Paths.get(dateiname)).toArray(String[]::new);
+        String[] zeilen = Files.readAllLines(Paths.get(dateiname)).toArray(new String[0]);
         if (!zeilen[0].equalsIgnoreCase("Knoten:"))
             throw new IOException("Die übergebene Datei ist wahrscheinlich kein Graph-Export");
         graph = new Graph();
