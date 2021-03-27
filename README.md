@@ -14,7 +14,8 @@ Alle Klassen haben einen generischen Typ. Der kann zu Beginn missachtet werden, 
 -> Eine neue Funktion wird durch die Methode(n) aktion hinzugefügt, an die ein Name und eine Methode übergeben wird. Die Methode kann als Parameter entweder garnichts, nur einen Graphen, einen Graphen und ein Array an markierten Knoten oder einen Graphen, ein Array an markierten Knoten und ein Array an markierten Kanten annehmen. Der String-Rückgabewert wird als Dialog angezeigt, ist er null wird kein Dialog geöffnet.
 Beispiel:
 
-`new GraphFenster<>().graphAktion("Alle Vertices Markieren", graph -> {
+```java
+new GraphFenster<>().graphAktion("Alle Vertices Markieren", graph -> {
     graph.setAllVertexMarks(true);
 });
 
@@ -24,11 +25,12 @@ new GraphFenster<>().graphAktion("Alle fokussierten Vertices markieren", (graph,
 
 new GraphFenster<>().graphAktion("Alle fokussierten Kanten markieren", (graph, knoten, kanten) -> {
     for (Edge e : kanten) e.setMarked(true);
-});`
+});```
 
 Eine Aufgabe zum Dijkstra-Algorithmus könnte beispielsweise so aussehen:
 
-`public class GraphAnwendung {
+```java
+public class GraphAnwendung {
     public static void main(String... args) {
         new GraphFenster<>(new Graph(), DijkstraVertex.class).graphAktion("Dijkstra-Algorithmus", (graph, fokussiert) -> {
             if (fokussiert.length == 2) return GraphAnwendung.dijkstra(graph, fokussiert[0], fokussiert[1]);
@@ -39,4 +41,4 @@ Eine Aufgabe zum Dijkstra-Algorithmus könnte beispielsweise so aussehen:
     public static String dijkstra(Graph graph, DijkstraVertex pStartVertex, DijkstraVertex pEndVertex) {
         // TODO Quelltext hier einfügen
     }
-}`
+}```
