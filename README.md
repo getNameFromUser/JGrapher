@@ -25,7 +25,8 @@ new GraphFenster<>().graphAktion("Alle fokussierten Vertices markieren", (graph,
 
 new GraphFenster<>().graphAktion("Alle fokussierten Kanten markieren", (graph, knoten, kanten) -> {
     for (Edge e : kanten) e.setMarked(true);
-});```
+});
+```
 
 Eine Aufgabe zum Dijkstra-Algorithmus könnte beispielsweise so aussehen:
 
@@ -41,4 +42,5 @@ public class GraphAnwendung {
     public static String dijkstra(Graph graph, DijkstraVertex pStartVertex, DijkstraVertex pEndVertex) {
         // TODO Quelltext hier einfügen
     }
-}```
+}
+```
