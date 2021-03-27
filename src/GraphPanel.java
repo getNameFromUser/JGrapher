@@ -152,7 +152,7 @@ public class GraphPanel<V extends Vertex> extends JPanel {
 
     protected void mausBewegt(Point2D mausPosition) {
         transformation = getTransformation();
-        if (!bewegung.mausBewegt(mausPosition)) {
+        if (bewegung == null || !bewegung.mausBewegt(mausPosition)) {
             if (aktuellerKnoten == null || !aktuellerKnoten.trifftPunkt(mausPosition)) {
                 aktuellerKnoten = null;
             } else if (aktuellerKnoten != null) {
