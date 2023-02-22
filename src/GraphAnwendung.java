@@ -7,7 +7,7 @@ import java.text.DecimalFormat;
  * Beschreibung
  *
  * @author Philip Maus (https://github.com/getNameFromUser)
- * @version 1.0 vom 27.03.2021
+ * @version 1.1 vom 22.02.2023
  */
 
 public class GraphAnwendung {
@@ -40,7 +40,8 @@ public class GraphAnwendung {
 
 
     public static void main(String[] args) {
-        new GraphFenster<>(Tools.demoGraph(), DijkstraVertex.class).aktion("Eulerkreis", GraphAnwendung::eulerkreis).
+        Class<? extends Vertex> vertexKlasse = DijkstraVertex.class;
+        new GraphFenster<>(Tools.demoGraph(vertexKlasse), vertexKlasse).aktion("Eulerkreis", GraphAnwendung::eulerkreis).
                 aktion("Tiefensuche", (graph, knoten) -> knoten.length == 2 ? (tiefensuche(graph, knoten[0], knoten[1]) ? "" : "Kein ") +
                         "Weg gefunden." : knoten.length == 1 ? tiefensuche(graph, knoten[0]) : "Bitte ein oder zwei Knoten auswählen.").
                 aktion("Kürzester Weg", (graph, knoten) -> knoten.length == 2 ? new DecimalFormat("#0.0").
@@ -49,7 +50,7 @@ public class GraphAnwendung {
                 aktion("Tiefendurchlauf (Stack)", (graph, knoten) -> knoten.length == 1 ? tiefensucheStack(graph, knoten[0]) : "Bitte einen Knoten auswählen.").
                 aktion("Breitensuche", (graph, knoten) -> knoten.length == 1 ? breitensucheQueue(graph, knoten[0]) : "Bitte einen Knoten auswählen.").
                 aktion("Krukskal", GraphAnwendung::kruskal).
-                aktion("Adjazenzmatrix", g -> GraphAnwendung.gibAdjazenzmatrix(g).toString()).aktion("© Philip Maus 2021", g -> {
+                aktion("Adjazenzmatrix", g -> GraphAnwendung.gibAdjazenzmatrix(g).toString()).aktion("© Philip Maus 2023", g -> {
             try {
                 java.awt.Desktop.getDesktop().browse(new URI("https://www.pmaus.de/?project=jgrapher"));
             } catch (IOException | URISyntaxException e) {

@@ -59,7 +59,7 @@ public class GraphAnwendung {
 
 ## Lizenz:
 
-   Copyright 2021 Philip Maus (https://github.com/getNameFromUser/)
+   Copyright 2023 Philip Maus (https://github.com/getNameFromUser/)
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.

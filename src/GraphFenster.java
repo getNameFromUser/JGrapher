@@ -6,6 +6,7 @@ import java.awt.event.MouseEvent;
 import java.awt.geom.Point2D;
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
@@ -25,6 +26,8 @@ public class GraphFenster<V extends Vertex> extends JFrame {
     private GraphPanel<V> graphPanel;
     private VertexGUI<V> start = null;
 
+    private Class<V> klasse;
+
     public GraphFenster() {
         this(new Graph());
     }
@@ -35,7 +38,6 @@ public class GraphFenster<V extends Vertex> extends JFrame {
 
     public GraphFenster(Graph pGraph, Class<V> pKlasse) {
         super("JGrapher");
-        Class<V> klasse;
         if (pKlasse == null) {
             //noinspection unchecked
             List<V> list = (List<V>) pGraph.getVertices();
@@ -45,11 +47,7 @@ public class GraphFenster<V extends Vertex> extends JFrame {
             else //noinspection unchecked
                 klasse = (Class<V>) Vertex.class;
         } else klasse = pKlasse;
-        try {
-            eigenerKonstruktor = klasse.getConstructor(String.class);
-        } catch (NoSuchMethodException ignored) {
-            eigenerKonstruktor = null;
-        }
+        eigenerKonstruktor = (Constructor<V>) Tools.gibVertexKonstruktor(pKlasse, String.class);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setSize(920, 530);
         Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
@@ -280,19 +278,15 @@ public class GraphFenster<V extends Vertex> extends JFrame {
         graphPanel.repaint();
     }
 
+    @SuppressWarnings("unchecked")
     private V neuerVertex(String pId) {
-        if (eigenerKonstruktor != null) try {
-            return eigenerKonstruktor.newInstance(pId);
-        } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
-            eigenerKonstruktor = null;
-        }
-        //noinspection unchecked
-        return (V) new Vertex(pId);
+        return (V) Tools.neuerVertex(eigenerKonstruktor, pId);
     }
 
-    private Vertex[] gibFokussierteVertices() {
+    private V[] gibFokussierteVertices() {
         VertexGUI<V>[] vertexGUIs = graphPanel.gibFokussierteKnoten();
-        Vertex[] vertices = new Vertex[vertexGUIs.length];
+        @SuppressWarnings("unchecked")
+        V[] vertices = (V[]) Array.newInstance(this.klasse, vertexGUIs.length);
         for (int i = 0; i < vertices.length; i++) vertices[i] = vertexGUIs[i].gibVertex();
         return vertices;
     }
@@ -317,11 +311,11 @@ public class GraphFenster<V extends Vertex> extends JFrame {
         return aktion(pName, (graph, fokussierteKnoten, fokussierteKanten) -> pAktion.funktion(graph));
     }
 
-    public GraphFenster<V> aktion(String pName, VertexAktion pAktion) {
+    public GraphFenster<V> aktion(String pName, VertexAktion<V> pAktion) {
         return aktion(pName, (graph, fokussierteKnoten, fokussierteKanten) -> pAktion.funktion(graph, fokussierteKnoten));
     }
 
-    public GraphFenster<V> aktion(String pName, VertexKantenAktion pAktion) {
+    public GraphFenster<V> aktion(String pName, VertexKantenAktion<V> pAktion) {
         JButton neueFunktion = new JButton(pName);
         neueFunktion.addActionListener(e -> {
             String text = pAktion.funktion(graphPanel.gibGraph(), gibFokussierteVertices(), gibFokussierteEdges());
@@ -339,11 +333,11 @@ public class GraphFenster<V extends Vertex> extends JFrame {
         String funktion(Graph graph);
     }
 
-    public interface VertexAktion {
-        String funktion(Graph graph, Vertex[] fokussierteKnoten);
+    public interface VertexAktion<V extends Vertex> {
+        String funktion(Graph graph, V[] fokussierteKnoten);
     }
 
-    public interface VertexKantenAktion {
-        String funktion(Graph graph, Vertex[] fokussierteKnoten, Edge[] fokussierteKanten);
+    public interface VertexKantenAktion<V extends Vertex> {
+        String funktion(Graph graph, V[] fokussierteKnoten, Edge[] fokussierteKanten);
     }
 }
